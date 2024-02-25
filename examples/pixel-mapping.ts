@@ -3,8 +3,8 @@ import {alternatingMatrixMapping} from "../src/mappings"
 import ws281x from "../src"
 
 const panel = {
-  width: 13,
-  height: 13,
+  width: 4,
+  height: 4,
 }
 
 const leds = panel.width * panel.height
@@ -25,11 +25,14 @@ function loop() {
 
   // Move on to next
   offset = (offset + 1) % leds
-  if (offset === 0) {
-    ws281x.reset()
-  }
 
   // Render to strip
   ws281x.render(pixels, mapping)
+  // ws281x.sleep(1000 / 10)
+  setTimeout(loop, 100)
 }
-setInterval(loop, 100)
+loop()
+
+process.on("SIGINT", () => {
+  ws281x.reset()
+})

@@ -1,13 +1,11 @@
-import ws281x from "../src"
+import ws281x, {StripType} from '../src'
 
-const leds = 24
+const leds = 16
 
 ws281x.configure({
   gpio: 18,
   leds,
-  dma: 10,
-  brightness: 0.5,
-  type: "rgb",
+  brightness: 1,
 })
 
 // Create a pixel array matching the number of leds.
