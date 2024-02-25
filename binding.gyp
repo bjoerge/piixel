@@ -3,10 +3,13 @@
     {
       "target_name": "addon",
       "sources": [
-        "addon/addon.cc",
-        "addon/pi/pi_est.cc",
-        "addon/sync.cc",
-        "addon/async.cc"
+        "addon/addon.cpp",
+        "addon/rpi_ws281x/ws2811.c",
+        "addon/rpi_ws281x/pwm.c",
+        "addon/rpi_ws281x/dma.c",
+        "addon/rpi_ws281x/mailbox.c",
+        "addon/rpi_ws281x/rpihw.c",
+        "addon/rpi_ws281x/pcm.c"
       ],
       'cflags!': [ '-fno-exceptions' ],
       'cflags_cc!': [ '-fno-exceptions' ],

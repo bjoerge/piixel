@@ -1,36 +1,109 @@
 import getBindings from 'bindings'
+import {clear} from './mappings'
 
-const index = getBindings('addon')
+const addon = getBindings('addon')
 
-const DEFAULT_CALCULATIONS = 100000000
+export interface Options {
+  /**
+   * Number of leds to control
+   */
+  leds: number
 
-export function runSync(calculations = DEFAULT_CALCULATIONS) {
-  const start = Date.now()
-  // Estimate() will execute in the current thread,
-  // the next line won't return until it is finished
-  const result = index.calculateSync(calculations)
-  return {result, ms: Date.now() - start}
+  /**
+   *  DMA channel
+   *  @see https://github.com/jgarff/rpi_ws281x/blob/1f47b59ed603223d1376d36c788c89af67ae2fdc/README.md#important-warning-about-dma-channels
+   */
+  dma?: number
+
+  /**
+   * Set the GPIO number to communicate with the Neopixel strip (default 18)
+   */
+  gpio?: number
+
+  /**
+   * Set brightness, a value from 0 to 1, default 1
+   */
+  brightness?: number
+
+  /**
+   * The RGB sequence may vary on some strips. Valid values
+   *  are "rgb", "rbg", "grb", "gbr", "bgr", "brg".
+   *  Default is "rgb".
+   *  RGBW strips are not currently supported.
+   */
+  type?: "rgb" | "rbg" | "grb" | "gbr" | "bgr" | "brg"
 }
 
-export function runAsync(calculations = DEFAULT_CALCULATIONS, batches = 16) {
-  return new Promise<{ms: number; result: number}>(resolve => {
-    let ended = 0
-    let total = 0
-    const start = Date.now()
 
-    function done(err: Error, result: number) {
-      total += result
+export interface Options {
+  /**
+   * Number of leds to control
+   */
+  leds: number
 
-      // have all the batches finished executing?
-      if (++ended === batches) {
-        resolve({result: total / batches, ms: Date.now() - start})
-      }
-    }
+  /**
+   *  DMA channel
+   *  @see https://github.com/jgarff/rpi_ws281x/blob/1f47b59ed603223d1376d36c788c89af67ae2fdc/README.md#important-warning-about-dma-channels
+   */
+  dma?: number
 
-    // for each batch of work, request an async Estimate() for
-    // a portion of the total number of calculations
-    for (let i = 0; i < batches; i++) {
-      index.calculateAsync(calculations / batches, done)
-    }
-  })
+  /**
+   * Set the GPIO number to communicate with the Neopixel strip (default 18)
+   */
+  gpio?: number
+
+  /**
+   * Set brightness, a value from 0 to 1, default 1
+   */
+  brightness?: number
+
+  /**
+   * The RGB sequence may vary on some strips. Valid values
+   *  are "rgb", "rbg", "grb", "gbr", "bgr", "brg".
+   *  Default is "rgb".
+   *  RGBW strips are not currently supported.
+   */
+  type?: "rgb" | "rbg" | "grb" | "gbr" | "bgr" | "brg"
 }
+
+class Ws281x {
+  #leds?: number
+  #defaultMapping: Uint32Array
+  constructor() {
+    this.#leds = 0
+    this.#defaultMapping = new Uint32Array(0)
+  }
+
+  configure(options: Options) {
+    if (options.leds !== this.#leds) {
+      this.#leds = options.leds
+      this.#defaultMapping = new Uint32Array(options.leds)
+    }
+    addon.configure(options)
+  }
+
+  reset() {
+    if (this.#leds !== undefined) {
+      addon.reset()
+    }
+    this.#leds = undefined
+  }
+
+  sleep(ms: number) {
+    addon.sleep(ms)
+  }
+
+  render(pixels: Uint32Array, mapping?: Uint32Array) {
+    if (this.#leds === undefined) {
+      throw new Error("Must call configure() before render()")
+    }
+    if (pixels.length !== this.#leds) {
+      throw new Error("Number of pixels cannot change between renders")
+    }
+
+    addon.render(pixels, mapping || this.#defaultMapping)
+  }
+}
+
+export default new Ws281x()
+
