@@ -10,6 +10,7 @@
     "native:clean": "node-gyp clean",
     "native:configure": "node-gyp configure",
     "native:rebuild": "node-gyp clean",
+    "pull:rpi_ws281x": "git subtree pull --prefix addon/rpi_ws281x https://github.com/jgarff/rpi_ws281x master --squash",
     "test": "glob src/**/*.test.ts -c 'tsx --test'"
   },
   "dependencies": {
