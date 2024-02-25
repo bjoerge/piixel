@@ -1,0 +1,39 @@
+{
+  "name": "pipixel",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Node.js wrapper around rpi_ws281x",
+  "main": "./dist/addon.js",
+  "scripts": {
+    "native:build": "node-gyp build",
+    "native:build:force": "pnpm native:clean && pnpm native:configure && pnpm native:build",
+    "native:clean": "node-gyp clean",
+    "native:configure": "node-gyp configure",
+    "native:rebuild": "node-gyp clean",
+    "test": "glob src/**/*.test.ts -c 'tsx --test'"
+  },
+  "dependencies": {
+    "bindings": "^1.5.0",
+    "node-addon-api": "^7.1.0"
+  },
+  "devDependencies": {
+    "@types/bindings": "^1.5.5",
+    "@types/node": "^18.19.18",
+    "@typescript-eslint/eslint-plugin": "^7.0.2",
+    "@typescript-eslint/parser": "^7.0.2",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-simple-import-sort": "^12.0.0",
+    "glob": "^10.3.10",
+    "prettier": "^3.2.5",
+    "prettier-plugin-packagejson": "^2.4.12",
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">= 18.0.0"
+  },
+  "gypfile": true
+}
