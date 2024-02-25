@@ -1,6 +1,6 @@
 import getBindings from 'bindings'
 
-const addon = getBindings('addon')
+const index = getBindings('addon')
 
 const DEFAULT_CALCULATIONS = 100000000
 
@@ -8,7 +8,7 @@ export function runSync(calculations = DEFAULT_CALCULATIONS) {
   const start = Date.now()
   // Estimate() will execute in the current thread,
   // the next line won't return until it is finished
-  const result = addon.calculateSync(calculations)
+  const result = index.calculateSync(calculations)
   return {result, ms: Date.now() - start}
 }
 
@@ -30,7 +30,7 @@ export function runAsync(calculations = DEFAULT_CALCULATIONS, batches = 16) {
     // for each batch of work, request an async Estimate() for
     // a portion of the total number of calculations
     for (let i = 0; i < batches; i++) {
-      addon.calculateAsync(calculations / batches, done)
+      index.calculateAsync(calculations / batches, done)
     }
   })
 }

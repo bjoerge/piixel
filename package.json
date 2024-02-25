@@ -2,9 +2,10 @@
   "name": "pipixel",
   "version": "0.0.0",
   "private": true,
-  "description": "Node.js wrapper around rpi_ws281x",
-  "main": "./dist/addon.js",
+  "description": "Node.js bindings for rpi_ws281x",
+  "main": "./dist/index.js",
   "scripts": {
+    "build": "tsc",
     "native:build": "node-gyp build",
     "native:build:force": "pnpm native:clean && pnpm native:configure && pnpm native:build",
     "native:clean": "node-gyp clean",

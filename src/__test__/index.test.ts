@@ -1,7 +1,7 @@
 import assert from 'node:assert'
 import {test} from 'node:test'
 
-import {runAsync, runSync} from '../addon'
+import {runAsync, runSync} from '../index'
 
 test('addon sync', () => {
   assert.equal(runSync().result, 3.14171528)
