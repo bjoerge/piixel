@@ -115,11 +115,11 @@ Napi::Value Configure(const Napi::CallbackInfo & info) {
     if (!options.Get("brightness").IsNumber()) {
       throw Napi::Error::New(env, "Invalid option passed to configure(): `brightness` must be a number");
     }
-    uint32_t brightness = options.Get("brightness").ToNumber().Uint32Value();
+    float brightness = options.Get("brightness").ToNumber().FloatValue();
     if (brightness > 1 || brightness < 0) {
       throw Napi::Error::New(env, "Invalid option passed to configure(): `brightness` must be between 0 and 1");
     }
-    ws2811.channel[0].brightness = brightness * 255;
+    ws2811.channel[0].brightness = (int)(brightness * 255);
   }
 
   if (options.Has("type")) {

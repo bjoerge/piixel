@@ -10,7 +10,7 @@ const panel = {
 const leds = panel.width * panel.height
 
 // Configure ws281x
-ws281x.configure({leds, gpio: 18, brightness: 1})
+ws281x.configure({leds, gpio: 18, brightness: 0.4})
 
 // Current pixel position
 let offset = 0
@@ -21,7 +21,7 @@ function loop() {
   const pixels = new Uint32Array(leds)
 
   // Set a specific pixel
-  pixels[offset] = 0xff0000
+  pixels[offset] = 0xff00aa
 
   // Move on to next
   offset = (offset + 1) % leds
@@ -29,10 +29,6 @@ function loop() {
   // Render to strip
   ws281x.render(pixels, mapping)
   // ws281x.sleep(1000 / 10)
-  setTimeout(loop, 100)
+  setTimeout(loop, 50)
 }
 loop()
-
-process.on("SIGINT", () => {
-  ws281x.reset()
-})

@@ -5,7 +5,7 @@ const leds = 16
 ws281x.configure({
   gpio: 18,
   leds,
-  brightness: 1,
+  brightness: 0.6,
 })
 
 // Create a pixel array matching the number of leds.
