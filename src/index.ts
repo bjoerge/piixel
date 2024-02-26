@@ -60,20 +60,18 @@ export interface Options {
 
 class Ws281x {
   #leds?: number
-  #configured = false
   constructor() {
     this.#leds = 0
   }
 
   configure(options: Options) {
-    if (this.#configured) {
+    if (this.#leds) {
       throw new Error('ws281x already configured. Call ws281x.reset() first')
     }
     if (options.leds !== this.#leds) {
       this.#leds = options.leds
     }
     const ret = addon.configure(options)
-    this.#configured = true
     return ret
   }
 
@@ -82,6 +80,12 @@ class Ws281x {
       addon.reset()
     }
     this.#leds = undefined
+  }
+
+  clear() {
+    if (this.#leds !== undefined) {
+      this.render(new Uint32Array(this.#leds))
+    }
   }
 
   render(pixels: Uint32Array) {

@@ -13,16 +13,24 @@ function loop() {
   const pixels = new Uint32Array(leds)
 
   // Set a specific pixel
-  pixels[offset] = colorwheel(color++ % 255)
-
-  // Move on to next
-  offset = (offset + 1) % leds
+  pixels[offset++%leds] = colorwheel(color++ % 255)
 
   // Render to strip
   ws281x.render(pixels)
+
+  if (offset == 32) {
+    offset = 0
+    setTimeout(() => {
+      loop()
+        ws281x.clear()
+
+    }, 2000)
+  } else {
+    setTimeout(loop, 100)
+  }
 }
 
-setInterval(loop, 100)
+setTimeout(loop, 100)
 
 /**
  * Ported to JS from

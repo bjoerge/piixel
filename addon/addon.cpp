@@ -169,12 +169,23 @@ Napi::Value Render(const Napi::CallbackInfo & info) {
 
 }
 
+Napi::Value Reset(const Napi::CallbackInfo & info) {
+  Napi::Env env = info.Env();
+  memset(ws2811.channel[0].leds, 0, sizeof(uint32_t) * ws2811.channel[0].count);
+  ws2811_render(&ws2811);
+	ws2811_fini(&ws2811);
+
+	return Napi::Boolean::New(env, true);
+}
 Napi::Object Init(Napi::Env env, Napi::Object exports) {
   exports.Set(Napi::String::New(env, "configure"),
     Napi::Function::New(env, Configure));
 
   exports.Set(Napi::String::New(env, "render"),
     Napi::Function::New(env, Render));
+
+  exports.Set(Napi::String::New(env, "reset"),
+    Napi::Function::New(env, Reset));
 
   return exports;
 }
