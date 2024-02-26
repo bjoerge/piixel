@@ -79,9 +79,8 @@ std::string getErrorMessage(ws2811_return_t ret_val) {
 Napi::Value Configure(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
 
-  if (info.Length() != 1) {
-    throw Napi::Error::New(env,
-                           "Configure must be called with an options object");
+  if (info.Length() != 1 || !info[0].IsObject()) {
+    throw Napi::Error::New(env, "Invalid `configure()` call: expected an options object");
   }
 
   Napi::Object options = info[0].As<Napi::Object>();
