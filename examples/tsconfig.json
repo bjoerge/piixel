@@ -1,4 +1,9 @@
 {
   "extends": "..",
-  "include": ["*.ts", "../src/**/*.ts"]
+  "include": ["*.ts", "../src/**/*.ts"],
+  "compilerOptions": {
+    "paths": {
+      "piixel": ["../src/index.ts"]
+    }
+  }
 }

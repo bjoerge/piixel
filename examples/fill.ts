@@ -1,26 +1,17 @@
-import ws281x, {StripType} from '../src'
+import {colorwheel, StripType, ws281x} from 'piixel'
 
-const leds = 16
+const LEDS = 16
 
 ws281x.configure({
   gpio: 18,
-  leds,
+  leds: LEDS,
   brightness: 0.2,
   type: StripType.WS2811_STRIP_GRB,
 })
 
-// Create a pixel array matching the number of leds.
-// This must be an instance of Uint32Array.
-const pixels = new Uint32Array(leds)
-
-// Create a fill color with red/green/blue.
-const [r, g, b] = [255, 0, 0]
-
-const color = (r << 16) | (g << 8) | b
-
-for (let i = 0; i < leds; i++) {
-  pixels[i] = color
+const pixels = new Uint32Array(LEDS)
+for (let i = 0; i < LEDS; i++) {
+  pixels[i] = colorwheel((i * 256) / LEDS)
 }
 
-// Render to strip
 ws281x.render(pixels)
