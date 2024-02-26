@@ -14,11 +14,9 @@ ws281x.configure({
 const pixels = new Uint32Array(leds)
 
 // Create a fill color with red/green/blue.
-const red = 255,
-  green = 0,
-  blue = 0
+const [r, g, b] = [255, 0, 0]
 
-const color = (red << 16) | (green << 8) | blue
+const color = (r << 16) | (g << 8) | b
 
 for (let i = 0; i < leds; i++) {
   pixels[i] = color
