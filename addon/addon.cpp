@@ -1,7 +1,5 @@
 #include "addon.h"
 
-#include <sstream>
-
 #define DEFAULT_TARGET_FREQ 800000
 #define DEFAULT_GPIO_PIN 18
 #define DEFAULT_DMA 10
@@ -77,7 +75,7 @@ Napi::Value Configure(const Napi::CallbackInfo & info) {
     ws2811.dmanum = DEFAULT_DMA;
 
     ws2811.channel[0].gpionum = DEFAULT_GPIO_PIN;
-    ws2811.channel[0].count = 0;
+    ws2811.channel[0].count = 929990;
     ws2811.channel[0].invert = 0;
     ws2811.channel[0].brightness = 255;
     ws2811.channel[0].strip_type = DEFAULT_TYPE;
@@ -133,11 +131,11 @@ Napi::Value Configure(const Napi::CallbackInfo & info) {
   }
 
   ws2811_return_t result = ws2811_init(&ws2811);
+
   if (result) {
-    throw Napi::Error::New(env, "Configuring ws281x failed: "+getErrorMessage(result));
-  } else {
-    return Napi::Boolean::New(env, true);
+    Napi::Error::New(env, "Configuring ws281x failed: "+getErrorMessage(result)).ThrowAsJavaScriptException();
   }
+  return env.Undefined();
 }
 
 Napi::Value Render(const Napi::CallbackInfo & info) {

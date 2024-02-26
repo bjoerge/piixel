@@ -61,10 +61,8 @@ export interface Options {
 class Ws281x {
   #leds?: number
   #configured = false
-  #defaultMapping: Uint32Array
   constructor() {
     this.#leds = 0
-    this.#defaultMapping = new Uint32Array(0)
   }
 
   configure(options: Options) {
@@ -73,7 +71,6 @@ class Ws281x {
     }
     if (options.leds !== this.#leds) {
       this.#leds = options.leds
-      this.#defaultMapping = new Uint32Array(options.leds)
     }
     const ret = addon.configure(options)
     this.#configured = true
@@ -87,11 +84,7 @@ class Ws281x {
     this.#leds = undefined
   }
 
-  sleep(ms: number) {
-    addon.sleep(ms)
-  }
-
-  render(pixels: Uint32Array, mapping?: Uint32Array) {
+  render(pixels: Uint32Array) {
     if (this.#leds === undefined) {
       throw new Error('Must call configure() before render()')
     }
@@ -103,13 +96,4 @@ class Ws281x {
   }
 }
 
-function map(pixels: Uint32Array, mapping: Uint32Array) {
-  const mapped = new Uint32Array(pixels.length)
-  for (let i = 0; i < pixels.length; i++) {
-    mapped[i] = pixels[mapping[i]]
-  }
-  return mapped
-}
-
 export default new Ws281x()
-

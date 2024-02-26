@@ -34,9 +34,3 @@ test('configure()', () => {
     addon.configure({leds: 16, gpio: 21, type: 'xyz'})
   }, /`type` must be a number/)
 })
-
-test.only('render()', () => {
-  addon.configure({leds: 1, gpio: 18})
-
-  addon.render(new Uint32Array(2))
-})

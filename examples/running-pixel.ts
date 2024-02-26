@@ -1,6 +1,6 @@
-import ws281x from "../src"
+import ws281x from '../src'
 
-const leds = 24
+const leds = 16
 
 // Current pixel position
 let offset = 0
@@ -12,7 +12,7 @@ function loop() {
   const pixels = new Uint32Array(leds)
 
   // Set a specific pixel
-  pixels[offset] = 0xff0000
+  pixels[offset] = 0xff00aa
 
   // Move on to next
   offset = (offset + 1) % leds
