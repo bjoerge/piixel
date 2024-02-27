@@ -107,6 +107,12 @@ export interface Ws281xConfig {
 
   /**
    * @public
+   * Reset the LEDs on process exit (default false)
+   */
+  resetOnExit?: boolean
+
+  /**
+   * @public
    *  DMA channel to use (default 10)
    *  See {@link https://github.com/jgarff/rpi_ws281x/blob/master/README.md#important-warning-about-dma-channels}
    */
@@ -156,15 +162,21 @@ export interface Ws281xAPI {
  */
 class Ws281xImpl implements Ws281xAPI {
   #leds?: number = undefined
+  #resetOnExit = false
   constructor() {
-    process.once('beforeExit', () => this.reset())
+    process.once('exit', () => {
+      if (this.#resetOnExit) {
+        this.clear()
+      }
+    })
   }
-  configure(options: Ws281xConfig) {
+  configure({resetOnExit, ...options}: Ws281xConfig) {
     if (this.#leds !== undefined) {
       throw new Error(
         'ws281x is already configured. Call ws281x.reset() first!',
       )
     }
+    this.#resetOnExit = resetOnExit ?? false
     this.#leds = options.leds
     bindings.configure(options)
   }
