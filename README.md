@@ -42,7 +42,6 @@ const LEDS = 16
 ws281x.configure({
   gpio: 18,
   leds: LEDS,
-  brightness: 0.2,
   type: StripType.WS2811_STRIP_GRB,
 })
 
@@ -53,6 +52,9 @@ for (let i = 0; i < LEDS; i++) {
 
 // Render pixels to the LED strip
 ws281x.render(pixels)
+
+// Optionally, render with brightness
+ws281x.render({pixels, brightness: 0.4})
 ```
 
 Use ts-node or [tsx](https://github.com/privatenumber/tsx) to run

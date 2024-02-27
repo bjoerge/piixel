@@ -78,6 +78,8 @@ export type PCMGpio = 21 | 31
 export type SPIGpio = 10 | 38
 
 /**
+ * @public
+ *
  * Valid GPIOs to use with the Ws281x library
  */
 export type ValidGPIO = PWM0Gpio | PWM1Gpio | PCMGpio | SPIGpio
@@ -101,12 +103,6 @@ export interface Ws281xConfig {
 
   /**
    * @public
-   * Set brightness to a decimal value between 0 and 1 (default 1)
-   */
-  brightness?: number
-
-  /**
-   * @public
    * Reset the LEDs on process exit (default false)
    */
   resetOnExit?: boolean
@@ -127,6 +123,24 @@ export interface Ws281xConfig {
 
 /**
  * @public
+ * Options for rendering pixels to the LED strip
+ */
+export interface RenderOptions {
+  /**
+   * @public
+   * Pixels to render to the LED strip
+   */
+  pixels?: Uint32Array
+
+  /**
+   * @public
+   * Brightness of the LED strip (0.0 - 1.0)
+   */
+  brightness?: number
+}
+
+/**
+ * @public
  * The Ws281x API
  */
 export interface Ws281xAPI {
@@ -143,6 +157,12 @@ export interface Ws281xAPI {
    * Clear the LEDs (set all to off)
    */
   clear(): void
+
+  /**
+   * @public
+   * Render the given pixels to the LED strip
+   */
+  render(renderOptions: RenderOptions): void
 
   /**
    * @public
@@ -195,17 +215,37 @@ class Ws281xImpl implements Ws281xAPI {
     }
   }
 
-  render(pixels: Uint32Array) {
+  render(pixelsOrOpts: Uint32Array | RenderOptions) {
+    if (pixelsOrOpts instanceof Uint32Array) {
+      this.#render({pixels: pixelsOrOpts})
+    } else {
+      this.#render(pixelsOrOpts)
+    }
+  }
+
+  #render(options: RenderOptions) {
     if (this.#leds === undefined) {
       throw new Error('Must call configure() before render()')
     }
-    if (pixels.length !== this.#leds) {
-      throw new Error(
-        `Size of pixels array must match number of LEDs (expected: ${this.#leds}, got: ${pixels.length})`,
-      )
+    const ops: (() => void)[] = []
+    if (options.pixels !== undefined) {
+      if (options.pixels.length !== this.#leds) {
+        throw new Error(
+          `Size of pixels array must match number of LEDs (expected: ${this.#leds}, got: ${options.pixels.length})`,
+        )
+      }
+      ops.push(() => bindings.setPixels(options.pixels))
+    }
+    if (options.brightness !== undefined) {
+      ops.push(() => bindings.setBrightness(options.brightness))
     }
 
-    bindings.render(pixels)
+    if (ops.length === 0) {
+      // nothing to do
+      return
+    }
+    ops.forEach(op => op())
+    bindings.render()
   }
 }
 

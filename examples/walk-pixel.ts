@@ -4,10 +4,9 @@ const LEDS = 16
 
 // Configure ws281x
 ws281x.configure({
-  gpio: 18,
+  gpio: 10,
   leds: LEDS,
   type: StripType.WS2811_STRIP_GRB,
-  brightness: 0.5,
   resetOnExit: true,
 })
 

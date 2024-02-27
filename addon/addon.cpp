@@ -74,13 +74,15 @@ std::string getErrorMessage(ws2811_return_t ret_val) {
     return "Unable to initialize SPI";
   if (ret_val == WS2811_ERROR_SPI_TRANSFER)
     return "SPI transfer error";
+  return "Unknown error";
 }
 
 Napi::Value Configure(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
 
   if (info.Length() != 1 || !info[0].IsObject()) {
-    throw Napi::Error::New(env, "Invalid `configure()` call: expected an options object");
+    throw Napi::Error::New(
+        env, "Invalid `configure()` call: expected an options object");
   }
 
   Napi::Object options = info[0].As<Napi::Object>();
@@ -120,7 +122,8 @@ Napi::Value Configure(const Napi::CallbackInfo& info) {
   if (options.Has("dma")) {
     if (!options.Get("dma").IsNumber()) {
       throw Napi::Error::New(
-          env, "Invalid option passed to `configure()`: `dma` must be a number");
+          env,
+          "Invalid option passed to `configure()`: `dma` must be a number");
     }
     uint32_t dma = options.Get("dma").ToNumber().Uint32Value();
     ws2811.dmanum = dma;
@@ -144,7 +147,8 @@ Napi::Value Configure(const Napi::CallbackInfo& info) {
   if (options.Has("type")) {
     if (!options.Get("type").IsNumber()) {
       throw Napi::Error::New(
-          env, "Invalid option passed to `configure()`: `type` must be a number");
+          env,
+          "Invalid option passed to `configure()`: `type` must be a number");
     }
 
     uint32_t strip_type = options.Get("type").ToNumber().Uint32Value();
@@ -162,10 +166,10 @@ Napi::Value Configure(const Napi::CallbackInfo& info) {
   return env.Undefined();
 }
 
-Napi::Value Render(const Napi::CallbackInfo& info) {
+Napi::Value SetPixels(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
 
-  if (info.Length() != 1) {
+  if (info.Length() != 1 || !info[0].IsTypedArray()) {
     Napi::Error::New(env, "Invalid `render()` call: expected an Uint32Array")
         .ThrowAsJavaScriptException();
     return env.Undefined();
@@ -174,7 +178,8 @@ Napi::Value Render(const Napi::CallbackInfo& info) {
   Napi::TypedArray typedArray = info[0].As<Napi::TypedArray>();
 
   if (typedArray.TypedArrayType() != napi_uint32_array) {
-    Napi::Error::New(env, "Invalid argument passed to `render()`: expected an Uint32Array")
+    Napi::Error::New(
+        env, "Invalid argument passed to `render()`: expected an Uint32Array")
         .ThrowAsJavaScriptException();
     return env.Undefined();
   }
@@ -188,7 +193,40 @@ Napi::Value Render(const Napi::CallbackInfo& info) {
   for (int i = 0; i < ws2811.channel[0].count; i++) {
     ws2811.channel[0].leds[i] = pixels[i];
   }
+
+  return env.Undefined();
+}
+
+Napi::Value Render(const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+
   ws2811_render(&ws2811);
+  return env.Undefined();
+}
+
+Napi::Value SetBrightness(const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+
+  if (info.Length() != 1) {
+    throw Napi::Error::New(env,
+                           "Invalid value passed to `setBrightness()`: "
+                           "argument must be a number between 0 and 1");
+  }
+  Napi::Value brightnessArg = info[0];
+
+  if (!brightnessArg.IsNumber()) {
+    throw Napi::Error::New(env,
+                           "Invalid value passed to `setBrightness()`: "
+                           "argument must be a number between 0 and 1");
+  }
+  float brightness = brightnessArg.ToNumber().FloatValue();
+  if (brightness > 1 || brightness < 0) {
+    throw Napi::Error::New(env,
+                           "Invalid value passed to `setBrightness()`: "
+                           "argument must be between 0 and 1");
+  }
+
+  ws2811.channel[0].brightness = (int)(brightness * 255);
 
   return env.Undefined();
 }
@@ -201,9 +239,16 @@ Napi::Value Reset(const Napi::CallbackInfo& info) {
 
   return Napi::Boolean::New(env, true);
 }
+
 Napi::Object Init(Napi::Env env, Napi::Object exports) {
   exports.Set(Napi::String::New(env, "configure"),
               Napi::Function::New(env, Configure));
+
+  exports.Set(Napi::String::New(env, "setBrightness"),
+              Napi::Function::New(env, SetBrightness));
+
+  exports.Set(Napi::String::New(env, "setPixels"),
+              Napi::Function::New(env, SetPixels));
 
   exports.Set(Napi::String::New(env, "render"),
               Napi::Function::New(env, Render));

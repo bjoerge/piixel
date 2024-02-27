@@ -23,4 +23,6 @@ test('types work properly', () => {
 
   //@ts-expect-error - must be Uint32Array
   ws281x.render(new Uint8Array(16))
+
+  ws281x.render({pixels: new Uint32Array(16), brightness: 0.1})
 })

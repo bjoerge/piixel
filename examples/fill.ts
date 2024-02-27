@@ -3,9 +3,8 @@ import {colorwheel, StripType, ws281x} from 'piixel'
 const LEDS = 16
 
 ws281x.configure({
-  gpio: 18,
+  gpio: 10,
   leds: LEDS,
-  brightness: 0.2,
   type: StripType.WS2811_STRIP_GRB,
 })
 

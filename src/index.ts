@@ -4,4 +4,4 @@
  */
 export {colorwheel} from './colorwheel'
 export {rgb2hex} from './rgb2hex'
-export {StripType, ws281x, Ws281xAPI, Ws281xConfig} from './ws281x'
+export * from './ws281x'
