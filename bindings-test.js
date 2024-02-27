@@ -3,13 +3,11 @@ const assert = require('node:assert')
 
 const addon = require('bindings')('addon')
 
-test('configure()', () => {
-  assert.throws(
-    () => {
-      addon.configure()
-    },
-    {message: 'Configure must be called with an options object'},
-  )
+test('binding.configure() error handling', () => {
+  assert.throws(() => {
+    addon.configure()
+  }, /expected an options object/)
+
   assert.throws(() => {
     addon.configure({leds: '21'})
   }, /`leds` must be a number/)
@@ -33,4 +31,10 @@ test('configure()', () => {
   assert.throws(() => {
     addon.configure({leds: 16, gpio: 21, type: 'xyz'})
   }, /`type` must be a number/)
+})
+
+test('binding.render() error handling', () => {
+  assert.throws(() => {
+    addon.render()
+  }, /expected an Uint32Array/)
 })

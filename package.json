@@ -13,7 +13,8 @@
     "native:rebuild": "node-gyp clean",
     "pull:rpi_ws281x": "git subtree pull --prefix addon/rpi_ws281x https://github.com/jgarff/rpi_ws281x master --squash",
     "format": "prettier --write . && clang-format -style=Chromium -i addon/addon.cpp addon/addon.h",
-    "test": "glob src/**/*.test.ts -c 'tsx --test'"
+    "test": "glob src/**/*.test.ts -c 'tsx --test'",
+    "test:binding": "node --test bindings.test.js"
   },
   "dependencies": {
     "bindings": "^1.5.0",
