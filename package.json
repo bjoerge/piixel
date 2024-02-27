@@ -1,7 +1,7 @@
 {
   "name": "piixel",
-  "version": "0.0.2",
-  "description": "Node.js bindings for rpi_ws281x",
+  "version": "0.0.0",
+  "description": "Control WS281X / NeoPixel LEDs from a Raspberry Pi using Node.js and TypeScript",
   "keywords": [
     "neopixel",
     "led",
@@ -19,6 +19,7 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "directories": {
+    "doc": "docs",
     "example": "examples"
   },
   "scripts": {
@@ -35,7 +36,9 @@
     "format": "prettier --write . && clang-format -style=Chromium -i addon/addon.cpp addon/addon.h",
     "prepare": "husky install",
     "install": "node-gyp rebuild",
-    "prepublishOnly": "npm run build"
+    "doc": "run-s build && api-extractor run --local && api-documenter markdown -i temp -o docs",
+    "prepublishOnly": "npm run build",
+    "test": "run-s test:types"
   },
   "dependencies": {
     "bindings": "^1.5.0",

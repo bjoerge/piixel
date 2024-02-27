@@ -1,3 +1,5 @@
 /dist
 /.tmp
 addon/rpi_ws281x
+docs
+etc

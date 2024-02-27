@@ -2,7 +2,7 @@
 .idea
 .editorconfig
 .eslintignore
-.eslintrc.cjs
+.eslintrc.json
 .prettierignore
 .prettierrc
 .husky
@@ -12,4 +12,5 @@ test
 tsconfig.*
 vitest.config.mts
 docs
-
+api-extractor.json
+src/__test__/
