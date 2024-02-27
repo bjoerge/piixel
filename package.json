@@ -1,9 +1,26 @@
 {
-  "name": "pipixel",
-  "version": "0.0.0",
-  "private": true,
+  "name": "piixel",
+  "version": "0.0.2",
   "description": "Node.js bindings for rpi_ws281x",
+  "keywords": [
+    "neopixel",
+    "led",
+    "ledstrip",
+    "WS281x",
+    "WS2812",
+    "SK6812RGB",
+    "SK6812",
+    "SK6812RGBW",
+    "rpi_ws281x",
+    "Raspberry Pi"
+  ],
+  "license": "MIT",
+  "author": "Bjørge Næss",
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "directories": {
+    "example": "examples"
+  },
   "scripts": {
     "build": "tsc",
     "native:build": "node-gyp build",
@@ -11,10 +28,14 @@
     "native:clean": "node-gyp clean",
     "native:configure": "node-gyp configure",
     "native:rebuild": "node-gyp clean",
-    "pull:rpi_ws281x": "git subtree pull --prefix addon/rpi_ws281x https://github.com/jgarff/rpi_ws281x master --squash",
+    "sync:rpi_ws281x": "git subtree pull --prefix addon/rpi_ws281x https://github.com/jgarff/rpi_ws281x master --squash",
+    "test:types": "vitest --run",
+    "test:types:watch": "vitest --watch",
+    "test:binding": "node --test bindings-test.js",
     "format": "prettier --write . && clang-format -style=Chromium -i addon/addon.cpp addon/addon.h",
-    "test": "glob src/**/*.test.ts -c 'tsx --test'",
-    "test:binding": "node --test bindings.test.js"
+    "prepare": "husky install",
+    "install": "node-gyp rebuild",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "bindings": "^1.5.0",
@@ -30,12 +51,15 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-simple-import-sort": "^12.0.0",
+    "git-format-staged": "^3.1.0",
     "glob": "^10.3.10",
+    "husky": "^8.0.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.2.5",
     "prettier-plugin-packagejson": "^2.4.12",
     "tsx": "^4.7.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^1.3.1"
   },
   "engines": {
     "node": ">= 18.0.0"

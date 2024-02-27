@@ -17,16 +17,12 @@
     "strictPropertyInitialization": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
-
-    // Additional checks
     "noUnusedLocals": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "useDefineForClassFields": true,
     "lib": ["ES2020"],
-
-    // Module resolution
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "allowImportingTsExtensions": false
