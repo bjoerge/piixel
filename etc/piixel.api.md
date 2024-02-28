@@ -8,7 +8,25 @@
 export function colorwheel(pos: number): number;
 
 // @public
+export type PCMGpio = 21 | 31;
+
+// @public
+export type PWM0Gpio = 12 | 18 | 40 | 52;
+
+// @public
+export type PWM1Gpio = 13 | 19 | 41 | 45 | 53;
+
+// @public
+export interface RenderOptions {
+    brightness?: number;
+    pixels?: Uint32Array;
+}
+
+// @public
 export function rgb2hex(r: number, g: number, b: number): number;
+
+// @public
+export type SPIGpio = 10 | 38;
 
 // @public
 export const enum StripType {
@@ -45,21 +63,23 @@ export const enum StripType {
 }
 
 // @public
+export type ValidGPIO = PWM0Gpio | PWM1Gpio | PCMGpio | SPIGpio;
+
+// @public
 export const ws281x: Ws281xAPI;
 
 // @public
 export interface Ws281xAPI {
     clear(): void;
     configure(options: Ws281xConfig): void;
+    render(renderOptions: RenderOptions): void;
     render(pixels: Uint32Array): void;
     reset(): void;
 }
 
 // @public
 export interface Ws281xConfig {
-    brightness?: number;
     dma?: number;
-    // Warning: (ae-forgotten-export) The symbol "ValidGPIO" needs to be exported by the entry point index.d.ts
     gpio?: ValidGPIO;
     leds: number;
     resetOnExit?: boolean;

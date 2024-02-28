@@ -16,9 +16,8 @@ export interface Ws281xConfig
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [brightness?](./piixel.ws281xconfig.brightness.md) |  | number | _(Optional)_ Set brightness to a decimal value between 0 and 1 (default 1) |
 |  [dma?](./piixel.ws281xconfig.dma.md) |  | number | _(Optional)_ DMA channel to use (default 10) See [https://github.com/jgarff/rpi\_ws281x/blob/master/README.md\#important-warning-about-dma-channels](https://github.com/jgarff/rpi_ws281x/blob/master/README.md#important-warning-about-dma-channels) |
-|  [gpio?](./piixel.ws281xconfig.gpio.md) |  | ValidGPIO | _(Optional)_ Set the GPIO number to communicate with the Neopixel strip (default 18, PWM0) |
+|  [gpio?](./piixel.ws281xconfig.gpio.md) |  | [ValidGPIO](./piixel.validgpio.md) | _(Optional)_ Set the GPIO number to communicate with the Neopixel strip (default 18, PWM0) |
 |  [leds](./piixel.ws281xconfig.leds.md) |  | number | Number of LEDs to control |
 |  [resetOnExit?](./piixel.ws281xconfig.resetonexit.md) |  | boolean | _(Optional)_ Reset the LEDs on process exit (default false) |
 |  [type?](./piixel.ws281xconfig.type.md) |  | [StripType](./piixel.striptype.md) | _(Optional)_ Strip type (default [StripType.WS2811\_STRIP\_GRB](./piixel.striptype.md)<!-- -->) |

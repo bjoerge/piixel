@@ -24,7 +24,6 @@ const LEDS = 16
 ws281x.configure({
   gpio: 18,
   leds: LEDS,
-  brightness: 0.2,
   type: StripType.WS2811_STRIP_GRB,
 })
 
@@ -35,4 +34,5 @@ for (let i = 0; i < LEDS; i++) {
 // Render pixels to the LED strip
 ws281x.render(pixels)
 ```
+See more examples here: [https://github.com/bjoerge/piixel/tree/main/examples](https://github.com/bjoerge/piixel/tree/main/examples)
 

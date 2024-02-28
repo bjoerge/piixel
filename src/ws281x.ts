@@ -263,7 +263,6 @@ class Ws281xImpl implements Ws281xAPI {
  * ws281x.configure({
  *   gpio: 18,
  *   leds: LEDS,
- *   brightness: 0.2,
  *   type: StripType.WS2811_STRIP_GRB,
  * })
  *
@@ -274,5 +273,7 @@ class Ws281xImpl implements Ws281xAPI {
  * // Render pixels to the LED strip
  * ws281x.render(pixels)
  * ```
+ *
+ * See more examples here: {@link https://github.com/bjoerge/piixel/tree/main/examples}
  */
 export const ws281x: Ws281xAPI = new Ws281xImpl()

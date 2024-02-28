@@ -18,6 +18,7 @@ export interface Ws281xAPI
 |  --- | --- |
 |  [clear()](./piixel.ws281xapi.clear.md) | Clear the LEDs (set all to off) |
 |  [configure(options)](./piixel.ws281xapi.configure.md) | Configure the library |
-|  [render(pixels)](./piixel.ws281xapi.render.md) | Render the given pixels to the LED strip |
+|  [render(renderOptions)](./piixel.ws281xapi.render.md) | Render the given pixels to the LED strip |
+|  [render(pixels)](./piixel.ws281xapi.render_1.md) | Render the given pixels to the LED strip |
 |  [reset()](./piixel.ws281xapi.reset.md) | Reset the library and release resources |
 

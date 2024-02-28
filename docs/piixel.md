@@ -23,6 +23,7 @@ Control WS281X LEDs from a Raspberry Pi using TypeScript / Node.js
 
 |  Interface | Description |
 |  --- | --- |
+|  [RenderOptions](./piixel.renderoptions.md) | Options for rendering pixels to the LED strip |
 |  [Ws281xAPI](./piixel.ws281xapi.md) | The Ws281x API |
 |  [Ws281xConfig](./piixel.ws281xconfig.md) | Configuration options for the Ws281x library |
 
@@ -31,4 +32,14 @@ Control WS281X LEDs from a Raspberry Pi using TypeScript / Node.js
 |  Variable | Description |
 |  --- | --- |
 |  [ws281x](./piixel.ws281x.md) | Singleton instance of Ws281x |
+
+## Type Aliases
+
+|  Type Alias | Description |
+|  --- | --- |
+|  [PCMGpio](./piixel.pcmgpio.md) | PCM\_DOUT, which can be set to use GPIOs 21 and 31. Only 21 is available on the B+/2B/PiZero/3B, on pin 40. See [https://github.com/jgarff/rpi\_ws281x?tab=readme-ov-file\#pcm](https://github.com/jgarff/rpi_ws281x?tab=readme-ov-file#pcm) |
+|  [PWM0Gpio](./piixel.pwm0gpio.md) | PWM0, which can be set to use GPIOs 12, 18, 40, and 52. Only 12 (pin 32) and 18 (pin 12) are available on the B+/2B/3B See [https://github.com/jgarff/rpi\_ws281x?tab=readme-ov-file\#pwm](https://github.com/jgarff/rpi_ws281x?tab=readme-ov-file#pwm) |
+|  [PWM1Gpio](./piixel.pwm1gpio.md) | PWM1 which can be set to use GPIOs 13, 19, 41, 45 and 53. Only 13 is available on the B+/2B/PiZero/3B, on pin 33 See [https://github.com/jgarff/rpi\_ws281x?tab=readme-ov-file\#pwm](https://github.com/jgarff/rpi_ws281x?tab=readme-ov-file#pwm) |
+|  [SPIGpio](./piixel.spigpio.md) | SPI0-MOSI is available on GPIOs 10 and 38. Only GPIO 10 is available on all models. See [https://github.com/jgarff/rpi\_ws281x?tab=readme-ov-file\#spi](https://github.com/jgarff/rpi_ws281x?tab=readme-ov-file#spi) |
+|  [ValidGPIO](./piixel.validgpio.md) | Valid GPIOs to use with the Ws281x library |
 
