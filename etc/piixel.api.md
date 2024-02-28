@@ -29,7 +29,7 @@ export function rgb2hex(r: number, g: number, b: number): number;
 export type SPIGpio = 10 | 38;
 
 // @public
-export const enum StripType {
+export enum StripType {
     // (undocumented)
     SK6812_STRIP = 528384,
     // (undocumented)

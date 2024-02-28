@@ -22,7 +22,7 @@ const bindings = tryGetBindings()
  * LED strip type identifiers
  * See {@link https://github.com/jgarff/rpi_ws281x/blob/master/ws2811.h#L46}
  */
-export const enum StripType {
+export enum StripType {
   // 4 color R, G, B and W ordering
   SK6812_STRIP_RGBW = 0x18100800,
   SK6812_STRIP_RBGW = 0x18100008,

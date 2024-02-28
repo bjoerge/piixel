@@ -9,7 +9,7 @@ LED strip type identifiers See [https://github.com/jgarff/rpi\_ws281x/blob/maste
 **Signature:**
 
 ```typescript
-export declare const enum StripType 
+export declare enum StripType 
 ```
 
 ## Enumeration Members
