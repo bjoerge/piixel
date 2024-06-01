@@ -23,7 +23,7 @@ class MockBindings implements Bindings {
   #brightness: number = 1
   #layout: {h: number; w?: number}
 
-  // todo: add support for various pixel layouts, e.g. 8x8, 16x16, circle, etc.
+  // todo: add support circular layout
   constructor(layout: {h: number; w?: number} = {h: 1}) {
     this.#layout = layout
     if (layout.h !== -1) {
