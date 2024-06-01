@@ -16,6 +16,7 @@
   ],
   "license": "MIT",
   "author": "Bjørge Næss",
+  "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "directories": {
