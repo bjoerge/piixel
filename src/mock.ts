@@ -21,30 +21,53 @@ class MockBindings implements Bindings {
   #options: Ws281xConfig | undefined
   #pixels: Uint32Array = new Uint32Array(0)
   #brightness: number = 1
+  #layout: {h: number; w?: number}
 
   // todo: add support for various pixel layouts, e.g. 8x8, 16x16, circle, etc.
-  constructor() {
-    process.stdout.write(ansiEscapes.cursorHide + ansiEscapes.cursorLeft)
+  constructor(layout: {h: number; w?: number} = {h: 1}) {
+    this.#layout = layout
+    if (layout.h !== -1) {
+      process.stdout.write(ansiEscapes.cursorHide)
+    }
   }
+
   configure(options: Ws281xConfig) {
     this.#options = options
   }
   render() {
-    process.stdout.write(ansiEscapes.cursorLeft + ansiEscapes.eraseLine)
+    const height = this.#layout.h
+    if (height === -1) {
+      return
+    }
+
+    const width =
+      this.#layout.w ?? Math.ceil(this.#pixels.length / this.#layout.h)
+
+    const pixels = new Array(height)
+      .fill(0)
+      .map((_, row) =>
+        new Array(width)
+          .fill(0)
+          .map((_, col) => {
+            const pixel = this.#pixels[row * width + col]
+            const r = (pixel >> 16) & 0xff
+            const g = (pixel >> 8) & 0xff
+            const b = pixel & 0xff
+            return chalk.bgRgb(...brighten([r, g, b], 1 - this.#brightness))(
+              '   ',
+            )
+          })
+          .join(''),
+      )
+      .join('\n')
+
     process.stdout.write(
-      Array.from(this.#pixels)
-        .map(pixel => {
-          const r = (pixel >> 16) & 0xff
-          const g = (pixel >> 8) & 0xff
-          const b = pixel & 0xff
-          return chalk.bgRgb(...brighten([r, g, b], 1 - this.#brightness))(
-            '   ',
-          )
-        })
-        .join(' '),
+      ansiEscapes.cursorLeft + ansiEscapes.eraseLines(height) + pixels,
     )
   }
-  reset() {}
+  reset() {
+    process.stdout.write(ansiEscapes.cursorShow)
+  }
   setPixels(pixels: Uint32Array) {
     this.#pixels = pixels
   }
@@ -53,6 +76,6 @@ class MockBindings implements Bindings {
   }
 }
 
-export function createMockBindings(): Bindings {
-  return new MockBindings()
+export function createMockBindings(layout: {h: number; w?: number}): Bindings {
+  return new MockBindings(layout)
 }
