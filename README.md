@@ -65,6 +65,26 @@ tsx ./example.ts
 
 Note: Depending on which GPIO pin you use, you might need to run the script with `sudo`. See the README of [rpi-ws281x](https://github.com/jgarff/rpi_ws281x?tab=readme-ov-file) for more information.
 
+### Development
+
+Since this library only works on a Raspberry Pi, development on other platforms becomes a bit cumbersome.
+To make it easier to develop on your local machine, there's a `MOCK_PIIXEL` environment variable that can be set that will mock the hardware module and instead allow you to (optionally) render pixels to the terminal.
+![terminal-mock.gif](terminal-mock.gif)
+
+The environment variable can be set to the following values:
+- `1` - Enables terminal rendering, and renders all pixels in a single row.
+- `-1` – Enables mocking, but turns off terminal rendering.
+- `n` - Distributes pixels across n rows.
+- `HxW` - Renders pixels in an HxW grid. Any pixel outside the HxW grid will be ignored.
+
+Examples:
+
+- `MOCK_PIIXEL=1 tsx ./my-example.ts` - Renders all pixels in a single row.
+- `MOCK_PIIXEL=8 tsx ./my-example.ts` - Distributes pixels in an 8xN grid.
+- `MOCK_PIIXEL=8x8 tsx ./my-example.ts` - Renders pixels in an 8x8 square. Any pixel outside the 8x8 grid will be ignored.
+- `MOCK_PIIXEL=-1 tsx ./my-example.ts` - Mock the hardware module, but don't render anything to the terminal.
+
+
 ### Credits
 
 - Thanks to Jeremy Garff for writing and maintaining the [rpi-ws281x](https://github.com/jgarff/rpi_ws281x) C library.
