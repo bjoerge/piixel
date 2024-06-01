@@ -1,21 +1,4 @@
-import getBindings from 'bindings'
-
-function tryGetBindings() {
-  try {
-    return getBindings('addon')
-  } catch (error: unknown) {
-    if (
-      error instanceof Error &&
-      'tries' in error &&
-      Array.isArray(error.tries)
-    ) {
-      error.message = `!!This package is only works on a Raspberry PI!! ${error.message}`
-    }
-    throw error
-  }
-}
-
-const bindings = tryGetBindings()
+import {bindings} from './bindings'
 
 /**
  * @public
@@ -227,17 +210,20 @@ class Ws281xImpl implements Ws281xAPI {
     if (this.#leds === undefined) {
       throw new Error('Must call configure() before render()')
     }
+
+    const {pixels, brightness} = options
+
     const ops: (() => void)[] = []
-    if (options.pixels !== undefined) {
-      if (options.pixels.length !== this.#leds) {
+    if (typeof pixels !== 'undefined') {
+      if (pixels.length !== this.#leds) {
         throw new Error(
-          `Size of pixels array must match number of LEDs (expected: ${this.#leds}, got: ${options.pixels.length})`,
+          `Size of pixels array must match number of LEDs (expected: ${this.#leds}, got: ${pixels.length})`,
         )
       }
-      ops.push(() => bindings.setPixels(options.pixels))
+      ops.push(() => bindings.setPixels(pixels))
     }
-    if (options.brightness !== undefined) {
-      ops.push(() => bindings.setBrightness(options.brightness))
+    if (brightness !== undefined) {
+      ops.push(() => bindings.setBrightness(brightness))
     }
 
     if (ops.length === 0) {
