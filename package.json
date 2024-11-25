@@ -1,6 +1,6 @@
 {
   "name": "piixel",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Control WS281X / NeoPixel LEDs from a Raspberry Pi using Node.js and TypeScript",
   "keywords": [
     "neopixel",
