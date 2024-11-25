@@ -37,6 +37,7 @@
   "files": [
     "src",
     "addon",
+    "binding.gyp",
     "dist",
     "README.md",
     "package.json"
